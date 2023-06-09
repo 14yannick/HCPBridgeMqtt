@@ -1,5 +1,3 @@
-NOTE: this is a fork of the work of various people who did 99% of the work. I just did some cleanups, translated to english and fixed various bugs.
-
 # HCPBridge with MQTT + HomeAssistant Support
 ![image](https://user-images.githubusercontent.com/14005124/215204028-66bb0342-6bc2-48dc-ad8e-b08508bdc811.png)
 
@@ -22,13 +20,12 @@ It is **not** compatible with E3 series motors. Previous generations have differ
 * Web Interface
 * Web Service (GET)
 * OTA Update (with username and password)
-* AsyncWifiManger (hotspot when disconnected)
+<!-- * AsyncWifiManger (hotspot when disconnected) -->
 * DS18X20 or BME280 sensor (with threshold)
 * Efficient MQTT messages (send only MQTT Message if Door state changed)
 
 ## Known Bugs
-* The first command after reboot/boot needs at least two clicks.
-* On Promatic4 (at least) the status led of the motor blinks red.
+* If modbus communications is interruptes or lost, promatic4 shows "error 7" on LCD and the next command should be issued two or three times [Gifford47/HCPBridgeMqtt#11](https://github.com/Gifford47/HCPBridgeMqtt/issues/11).
 
 ## Notes by original author
 
