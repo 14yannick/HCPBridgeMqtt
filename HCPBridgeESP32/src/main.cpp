@@ -7,7 +7,7 @@
 #include <Ticker.h>
 #include "ArduinoJson.h"
 #include <sstream>
-#include <ESPAsyncWiFiManager.h>
+//#include <ESPAsyncWiFiManager.h>
 
 #include "configuration.h"
 #include "hciemulator.h"
@@ -24,7 +24,7 @@
   #include <Adafruit_BME280.h>
 #endif
 
-DNSServer dns;
+//DNSServer dns;
 
 // Hörmann HCP2 based on modbus rtu @57.6kB 8E1
 HCIEmulator emulator(&RS485);
@@ -595,6 +595,24 @@ void SensorCheck(void *parameter){
 
 TaskHandle_t sensorTask;
 
+void WiFiStationConnected(WiFiEvent_t event, WiFiEventInfo_t info){
+  Serial.println("Connected to AP successfully!");
+}
+
+void WiFiGotIP(WiFiEvent_t event, WiFiEventInfo_t info){
+  Serial.println("WiFi connected");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+}
+
+void WiFiStationDisconnected(WiFiEvent_t event, WiFiEventInfo_t info){
+  Serial.println("Disconnected from WiFi access point");
+  Serial.print("WiFi lost connection. Reason: ");
+  Serial.println(info.wifi_sta_disconnected.reason);
+  Serial.println("Trying to Reconnect");
+  WiFi.begin(STA_SSID, STA_PASSWD);
+}
+
 // setup mcu
 void setup()
 {
@@ -621,9 +639,21 @@ void setup()
 
   // setup wifi
   WiFi.setHostname(HOSTNAME);
-  AsyncWiFiManager wifiManager(&server,&dns);
-  wifiManager.setDebugOutput(false);    // disable serial debug output
-  wifiManager.autoConnect("HCPBridge",AP_PASSWD); // password protected ap
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(STA_SSID, STA_PASSWD);
+  Serial.print("Connecting to WiFi ..");
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print('.');
+    delay(1000);
+  }
+  WiFi.onEvent(WiFiStationConnected, WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_CONNECTED);
+  WiFi.onEvent(WiFiGotIP, WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_GOT_IP);
+  WiFi.onEvent(WiFiStationDisconnected, WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_DISCONNECTED);
+
+
+  //AsyncWiFiManager wifiManager(&server,&dns);
+  //wifiManager.setDebugOutput(false);    // disable serial debug output
+  //wifiManager.autoConnect(AP_SSID,AP_PASSWD); // password protected ap
 
   xTaskCreatePinnedToCore(
       mqttTaskFunc, /* Function to implement the task */

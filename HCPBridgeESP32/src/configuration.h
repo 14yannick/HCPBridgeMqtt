@@ -1,9 +1,16 @@
 #ifndef CONFIGURATION_H_
     #define CONFIGURATION_H_
 
-    // WIFI Accesspoint
-    #define AP_PASSWD  "password"
+    // Wifi Hostname
     #define HOSTNAME   "HCPBRIDGE"
+
+    // Station
+    #define STA_SSID        "my-wlan-ssid"
+    #define STA_PASSWD    "my-wlan-passwd"
+
+    // WIFI Accesspoint/ Hotspot
+    #define AP_SSID    "HCPBridge"
+    #define AP_PASSWD  "password"
 
     // MQTT
     #define MQTTSERVER  "192.168.1.100"
