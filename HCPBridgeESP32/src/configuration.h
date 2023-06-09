@@ -73,7 +73,7 @@
     // DEBUG
     #define DEBUG
     #define DEBUGTOPIC FTOPIC "/DEBUG"
-    void sendDebug(char *key, String value);
+    void sendDebug(char *key, const char* value);
     
     // HA Topics
     #define HA_ON  "true"

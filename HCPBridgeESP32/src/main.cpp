@@ -224,7 +224,7 @@ void setWill()
   mqttClient.setWill(AVAILABILITY_TOPIC, 0, true, HA_OFFLINE);
 }
 
-void sendDebug(char *key, String value)
+void sendDebug(char *key, const char* value)
 {
   DynamicJsonDocument doc(1024);
   char payload[1024];

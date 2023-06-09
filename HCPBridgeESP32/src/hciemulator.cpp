@@ -20,7 +20,8 @@ void LogCore(int Level, const char* msg, const unsigned char * data=NULL, size_t
             newmsg+=str;
         }
         Serial.println(newmsg);
-        sendDebug("hcilog", newmsg);
+        const char* tmp = newmsg.c_str();
+        sendDebug("hcilog", tmp);
     }else{
         Serial.println(msg);
         sendDebug("hcilog", msg);
