@@ -1,0 +1,50 @@
+esphome:
+  name: uap1-hcp
+  friendly_name: uap1_hcp
+  includes:
+  - hoermann.h
+  - uap1Hcp.h
+  libraries:
+  - Arduino
+  - Stream
+  - ModbusRTU=https://github.com/emelianov/modbus-esp8266
+  - bblanchon/ArduinoJson
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret api_key
+
+ota:
+  password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: !secret fallback_ssid
+    password: !secret fallback_password
+
+captive_portal:
+
+#https://github.com/evgeni/esphome-configs/blob/devel/somfy.yaml
+cover:
+- platform: custom
+  lambda: |-
+    auto my_custom_cover = new Uap1Hcp();
+    App.register_component(my_custom_cover);
+    return {my_custom_cover};
+  covers:
+    - name: "My Custom Cover"
+      device_class: garage
+      id: garage_door
